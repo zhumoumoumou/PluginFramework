@@ -10,6 +10,7 @@ namespace PluginFramework
     {
         static void Main(string[] args)
         {
+            Program p = new Program();
         }
     }
 }
