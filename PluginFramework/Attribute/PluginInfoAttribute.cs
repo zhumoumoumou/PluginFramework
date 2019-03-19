@@ -4,49 +4,37 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
+/// <summary>
+/// 插件相关的属性。
+/// </summary>
 namespace PluginFramework.Attribute
 {
-    /// <summary>
-    /// 表示互斥的插件类型。
-    /// 同一个类可拥有多个该属性。
-    /// 该类的所有子类都会拥有该属性。
-    /// </summary>
-    [AttributeUsage(AttributeTargets.Class, Inherited = true, AllowMultiple = true)]
-    public sealed class MutexPluginCategoryAttribute : System.Attribute
-    {
-        public MutexPluginCategoryAttribute(string category)
-        {
-            this.Category = category;
-
-            // TODO: Implement code here
-            
-        }
-
-        /// <summary>
-        /// 作为互斥的键值。
-        /// </summary>
-        public string Category { get; }
-    }
-
     /// <summary>
     /// 插件基础信息。
     /// </summary>
     [AttributeUsage(AttributeTargets.Class, Inherited = false, AllowMultiple = false)]
     sealed class PluginInfoAttribute : System.Attribute
     {
-        // This is a positional argument
         public PluginInfoAttribute(string friendlyName)
         {
             this.FriendlyName = friendlyName;
         }
 
+        /// <summary>
+        /// 该插件的友好名称。
+        /// </summary>
         public string FriendlyName { get; }
 
-        public Version Version { get; set; }
-
+        /// <summary>
+        /// 该插件的描述。
+        /// </summary>
         public string Description { get; set; }
     }
 
+    /// <summary>
+    /// 插件的类型信息，
+    /// 该类的所有子类都会拥有该属性。
+    /// </summary>
     [AttributeUsage(AttributeTargets.Class, Inherited = true, AllowMultiple = true)]
     sealed class PluginCategoryAttribute : System.Attribute
     {
@@ -56,5 +44,11 @@ namespace PluginFramework.Attribute
         }
         
         public string Category { get; }
+
+        /// <summary>
+        /// 代表该类目是否为互斥类目，
+        /// 即是否仅允许声明该类的某一个实例。
+        /// </summary>
+        public bool IsMutex { get; set; } = false;
     }
 }

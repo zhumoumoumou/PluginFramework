@@ -44,9 +44,9 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="BasePlugin.cs" />
-    <Compile Include="Demo1.cs" />
-    <Compile Include="DemoPlugin.cs" />
-    <Compile Include="Attribute\MutexCategoryAttribute.cs" />
+    <Compile Include="Attribute\PluginInfoAttribute.cs" />
+    <Compile Include="Demo\DemoPlugin1.cs" />
+    <Compile Include="Manager\BasicManager.cs" />
     <Compile Include="Interface\IUnloadable.cs" />
     <Compile Include="Interface\ILoadable.cs" />
     <Compile Include="Program.cs" />
@@ -55,5 +55,6 @@
   <ItemGroup>
     <None Include="App.config" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
