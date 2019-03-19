@@ -9,7 +9,7 @@ namespace PluginFramework.Interface
     /// <summary>
     /// 表示一个插件可以加载的接口。
     /// </summary>
-    interface ILoadable
+    public interface ILoadable
     {
         /// <summary>
         /// 插件加载方法。

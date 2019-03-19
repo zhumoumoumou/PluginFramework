@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace PluginFramework
 {
-    class BasePlugin : IRegistable
+    class BasePlugin
     {
         #region Metadata
         public Version Version { get; set; }

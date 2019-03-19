@@ -44,8 +44,11 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="BasePlugin.cs" />
-    <Compile Include="IUnloadable.cs" />
-    <Compile Include="ILoadable.cs" />
+    <Compile Include="Demo1.cs" />
+    <Compile Include="DemoPlugin.cs" />
+    <Compile Include="Attribute\MutexCategoryAttribute.cs" />
+    <Compile Include="Interface\IUnloadable.cs" />
+    <Compile Include="Interface\ILoadable.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

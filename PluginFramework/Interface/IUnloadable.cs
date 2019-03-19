@@ -9,8 +9,12 @@ namespace PluginFramework.Interface
     /// <summary>
     /// 表示某个插件可以卸载的接口。
     /// </summary>
-    interface IUnloadable
+    public interface IUnloadable
     {
+        /// <summary>
+        /// 表示某个插件可以热卸载。
+        /// </summary>
+        /// <returns></returns>
         bool Unload();
     }
 }
