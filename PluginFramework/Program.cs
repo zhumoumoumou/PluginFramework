@@ -12,6 +12,9 @@ namespace PluginFramework
         static void Main(string[] args)
         {
             Program p = new Program();
+            Manager.DirectoryManageOption option = Manager.DirectoryManageOption.Classified | Manager.DirectoryManageOption.Root;
+
+            Console.WriteLine(Enum.GetName(typeof(Manager.DirectoryManageOption), (int) 3));
 
             Console.ReadKey();
         }
