@@ -5,7 +5,7 @@
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProjectGuid>{1C18F1A6-E5F6-4CE6-B48C-A5BDB237C36A}</ProjectGuid>
-    <OutputType>Exe</OutputType>
+    <OutputType>Library</OutputType>
     <RootNamespace>PluginFramework</RootNamespace>
     <AssemblyName>PluginFramework</AssemblyName>
     <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
@@ -32,6 +32,9 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
+  <PropertyGroup>
+    <StartupObject />
+  </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
     <Reference Include="System.Core" />
@@ -43,13 +46,13 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="BasePlugin.cs" />
     <Compile Include="Attribute\PluginInfoAttribute.cs" />
     <Compile Include="Demo\DemoPlugin1.cs" />
+    <Compile Include="Interface\IManageable.cs" />
     <Compile Include="Manager\BasicManager.cs" />
     <Compile Include="Interface\IUnloadable.cs" />
     <Compile Include="Interface\ILoadable.cs" />
-    <Compile Include="Program.cs" />
+    <Compile Include="Manager\ManagedPluginItem.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

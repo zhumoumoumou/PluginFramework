@@ -13,7 +13,7 @@ namespace PluginFramework.Attribute
     /// 插件基础信息。
     /// </summary>
     [AttributeUsage(AttributeTargets.Class, Inherited = false, AllowMultiple = false)]
-    sealed class PluginInfoAttribute : System.Attribute
+    public sealed class PluginInfoAttribute : System.Attribute
     {
         public PluginInfoAttribute(string friendlyName)
         {
@@ -36,7 +36,7 @@ namespace PluginFramework.Attribute
     /// 该类的所有子类都会拥有该属性。
     /// </summary>
     [AttributeUsage(AttributeTargets.Class, Inherited = true, AllowMultiple = true)]
-    sealed class PluginCategoryAttribute : System.Attribute
+    public sealed class PluginCategoryAttribute : System.Attribute
     {
         public PluginCategoryAttribute(string category)
         {

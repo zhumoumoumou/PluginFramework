@@ -14,16 +14,15 @@ namespace PluginFramework.Demo
     [PluginCategory("示例", IsMutex = false)]
     [PluginCategory("测试用")]
     [PluginCategory("测试类目A独占", IsMutex = true)]
-    class Counter : ILoadable, IUnloadable
+    class Counter : IManageable, ILoadable, IUnloadable
     {
-        [DisplayName("目标委托句柄")]
-        [DefaultValue(null)]
         public EventHandler TargetHandler { get; set; }
 
         public event EventHandler OnCounterFire;
 
         public int Count { get; private set; }
-        
+        public bool IsEnabled { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
+
         public bool Load()
         {
             return true;
