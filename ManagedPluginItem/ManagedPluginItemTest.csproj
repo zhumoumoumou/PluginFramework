@@ -49,8 +49,9 @@
     <Reference Include="System.Core" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="BasicManagerTest.cs" />
     <Compile Include="TestPluginClass.cs" />
-    <Compile Include="UnitTest1.cs" />
+    <Compile Include="ManagedPluginItemTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

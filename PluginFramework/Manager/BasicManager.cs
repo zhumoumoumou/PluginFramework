@@ -37,12 +37,13 @@ namespace PluginFramework.Manager
     /// </summary>
     public class BasicManager
     {
-        private List<object> plugins;
+        public List<ManagedPluginItem> Plugins { get; private set; }
 
         /// <summary>
         /// 获取所有的可加载项。
         /// </summary>
-        public IEnumerable<ILoadable> LoadList { get { return GetComponents<ILoadable>(); } }
+        public IEnumerable<ManagedPluginItem> 
+            LoadList { get { return GetComponents<ILoadable>(); } }
         
         /// <summary>
         /// 当前管理器的工作目录。
@@ -53,23 +54,23 @@ namespace PluginFramework.Manager
 
         public BasicManager()
         {
-            plugins = new List<object>();
+            Plugins = new List<ManagedPluginItem>();
         }
 
         #region GetComponents
-        public IEnumerable<T> GetComponents<T>()
+        public IEnumerable<ManagedPluginItem> GetComponents<T>()
         {
-            var query = from plugin in plugins
-                        where plugin is T
-                        select (T)plugin;
+            var query = from plugin in Plugins
+                        where plugin.Plugin is T
+                        select plugin;
             return query;
         }
 
-        public IEnumerable<T> GetComponents<T>(Predicate<T> predicate)
+        public IEnumerable<ManagedPluginItem> GetComponents<T>(Predicate<T> predicate)
         {
-            var query = from plugin in plugins
-                        where plugin is T && predicate((T)plugin)
-                        select (T)plugin;
+            var query = from plugin in Plugins
+                        where plugin.Plugin is T && predicate((T)plugin.Plugin)
+                        select plugin;
             return query;
         }
         #endregion
@@ -126,6 +127,11 @@ namespace PluginFramework.Manager
             List<Assembly> assemblies = new List<Assembly>();
             foreach (var item in dllFiles)
             {
+                if (!File.Exists(item))
+                {
+                    throw new FileNotFoundException("指定的dll文件并不存在。", item);
+                }
+
                 try
                 {
                     Assembly assembly = Assembly.LoadFile(item);
@@ -139,17 +145,31 @@ namespace PluginFramework.Manager
             return assemblies.AsEnumerable();
         }
 
-        public virtual IEnumerable<ManagedPluginItem> CreatePluginManagedItems(IEnumerable<Assembly> assemblies)
+        public virtual void AppendPluginManagedItems(IEnumerable<Assembly> assemblies)
         {
-            List<ManagedPluginItem> managedPluginItems = new List<ManagedPluginItem>();
-
-
-
-
-
-            return managedPluginItems;
+            foreach (var ass in assemblies)
+            {
+                var types = ass.GetTypes();
+                foreach (var type in types)
+                {
+                    if (type.GetInterfaces().Contains(typeof(IManageable)))
+                    {
+                        Plugins.Add(ManagedPluginItem.CreateManagedPluginItem(type));
+                    }
+                }
+            }
         }
 
+
+        public virtual void PluginRegistStratagy()
+        {
+            OnPluginRegist?.Invoke();
+            PluginRegisted?.Invoke();
+        }
+
+        public event Action OnPluginRegist;
+
+        public event Action PluginRegisted;
 
     }
 
