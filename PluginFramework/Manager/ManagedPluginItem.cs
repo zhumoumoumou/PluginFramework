@@ -129,6 +129,22 @@ namespace PluginFramework.Manager
             return item;
         }
         
+        /// <summary>
+        /// 获取类型的所有互斥类型。
+        /// </summary>
+        /// <param name="targetType">目标类型。</param>
+        /// <returns>目标类型所含的所有互斥类型属性。</returns>
+        public static IEnumerable<string> GetTypeMutexCategories(Type targetType)
+        {
+            var query = from att 
+                        in targetType.
+                        GetCustomAttributes<Attribute.PluginCategoryAttribute>()
+                        where att.IsMutex
+                        select att.Category;
+
+            return query;
+        }
+
         #endregion
 
     }

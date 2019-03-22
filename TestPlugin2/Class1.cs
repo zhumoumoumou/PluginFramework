@@ -23,6 +23,7 @@ namespace TestPlugin2
 
         public bool Load()
         {
+            Console.WriteLine(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType.FullName + "已注册");
             return true;
         }
 
@@ -63,6 +64,7 @@ namespace TestPlugin2
 
         public bool Load()
         {
+            Console.WriteLine(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType.FullName + "已注册");
             return true;
         }
 

@@ -22,7 +22,7 @@ namespace Tests
         [TestMethod]
         public void WorkDirectoryPluginScanTest()
         {
-            var scanRes = manager.WorkDirectoryPluginScan();
+            var scanRes = manager.WorkDirectoryDllFilesScan();
 
             foreach (var item in scanRes)
             {
@@ -33,17 +33,27 @@ namespace Tests
         [TestMethod]
         public void DllLoadingChainTest()
         {
-            var dllPaths = manager.WorkDirectoryPluginScan();
+            var dllPaths = manager.WorkDirectoryDllFilesScan();
             var assemblies = manager.LoadAssembliesFromDlls(dllPaths);
-            manager.AppendPluginManagedItems(assemblies);
 
-            Console.ReadKey();
+            foreach (var ass in assemblies)
+            {
+                var types = ass.GetTypes();
+                foreach (var type in types)
+                {
+                    manager.AppendPluginManagedItem(type);
+                }
+            }
         }
 
         [TestMethod]
         public void GetComponentsTest()
         {
-            
+            manager.DllLoadingChain();
+            foreach (var item in manager.LoadList)
+            {
+                ((ILoadable)item.Plugin).Load();
+            }
         }
     }
 }
