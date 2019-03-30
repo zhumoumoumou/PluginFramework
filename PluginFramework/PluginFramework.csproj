@@ -48,6 +48,7 @@
   <ItemGroup>
     <Compile Include="Attribute\PluginInfoAttribute.cs" />
     <Compile Include="Demo\DemoPlugin1.cs" />
+    <Compile Include="Helper\Helper.cs" />
     <Compile Include="Interface\IManageable.cs" />
     <Compile Include="Manager\BasicManager.cs" />
     <Compile Include="Interface\IUnloadable.cs" />

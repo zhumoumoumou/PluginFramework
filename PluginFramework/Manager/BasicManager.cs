@@ -107,6 +107,7 @@ namespace PluginFramework.Manager
         /// </summary>
         /// <param name="dir"></param>
         /// <returns></returns>
+        /// <exception cref="DirectoryNotFoundException"/>
         public virtual IEnumerable<string> DirectoryPluginScan(string dir)
         {
             if (!Directory.Exists(dir))
@@ -160,6 +161,7 @@ namespace PluginFramework.Manager
         /// </summary>
         /// <param name="dllFiles">待加载的所有路径。</param>
         /// <returns>返回所有已加载的Assembly。</returns>
+        /// <exception cref="FileNotFoundException"/>
         public virtual IEnumerable<Assembly> LoadAssembliesFromDlls(IEnumerable<string> dllFiles)
         {
             List<Assembly> assemblies = new List<Assembly>();
@@ -198,7 +200,8 @@ namespace PluginFramework.Manager
         /// <see cref="ManagedPluginItem"/>并将其添加到
         /// <see cref="RegistedMutexCategories"/>列表中。
         /// </summary>
-        /// <param name="type"></param>
+        /// <param name="type">要添加管理的类型。</param>
+        /// <exception cref="ArgumentException"/>
         public virtual void AppendPluginManagedItem(Type type)
         {
             if (type.GetInterfaces().Contains(typeof(IManageable)))
@@ -212,7 +215,15 @@ namespace PluginFramework.Manager
                 }
                 else
                 {
-                    throw new ArgumentException("已有互斥类型注册。");
+
+                    if (OnMutexPluginConflict == null)
+                    {
+                        throw new ArgumentException("已有互斥类型注册。");
+                    }
+                    else
+                    {
+                        OnMutexPluginConflict.Invoke(type);
+                    }
                 }
             }
         }
@@ -234,11 +245,14 @@ namespace PluginFramework.Manager
                 }
             }
         }
-        
-        public event Action OnPluginRegist;
+        /// <summary>
+        /// 当检测到冲突时引发事件。若该事件未受任何订阅，<see cref="AppendPluginManagedItem(Type)"/>方法将抛出<see cref="ArgumentException"/>。
+        /// </summary>
+        public event Action<Type> OnMutexPluginConflict;
 
-        public event Action PluginRegisted;
-
+        /// <summary>
+        /// 用于处理不同接口响应的一般策略。
+        /// </summary>
+        public event Action<Type> InterfaceViewStratagy;
     }
-
 }
