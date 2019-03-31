@@ -6,6 +6,9 @@ using System.Threading.Tasks;
 
 namespace PluginFramework.Interface
 {
+    /// <summary>
+    /// 表示一个部件。
+    /// </summary>
     public interface IComponent : IDisposable
     {
         /// <summary>

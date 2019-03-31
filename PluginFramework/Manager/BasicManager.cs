@@ -8,6 +8,7 @@ using System.Threading.Tasks;
 using System.Reflection;
 
 using PluginFramework.Interface;
+using System.Runtime.InteropServices;
 
 namespace PluginFramework.Manager
 {
@@ -35,24 +36,25 @@ namespace PluginFramework.Manager
     /// <summary>
     /// 插件管理器。
     /// </summary>
-    public class BasicManager
+    [ComVisible(true)]
+    public static class BasicManager
     {
         /// <summary>
         /// 所有托管的插件。
         /// </summary>
-        public List<IExtension> Plugins { get; private set; }
+        public static List<IExtension> Plugins { get; private set; }
         
         /// <summary>
         /// 当前管理器的工作目录。
         /// </summary>
-        public string WorkDirectory { get; set; }
+        public static string WorkDirectory { get; set; }
 
         /// <summary>
         /// 当执行目录扫描方法时的扫描参数。
         /// </summary>
-        public DirectoryManageOption ScanOption { get; set; }
+        public static DirectoryManageOption ScanOption { get; set; }
 
-        public BasicManager()
+        static BasicManager()
         {
             Plugins = new List<IExtension>();
         }
@@ -63,7 +65,7 @@ namespace PluginFramework.Manager
         /// </summary>
         /// <typeparam name="T">源类型。</typeparam>
         /// <returns>所有类型为T、继承自T或者实现了接口T的对象。</returns>
-        public IEnumerable<T> GetComponents<T>()
+        public static IEnumerable<T> GetComponents<T>()
         {
             var query = from plugin in Plugins
                         where plugin is T
@@ -78,7 +80,7 @@ namespace PluginFramework.Manager
         /// <typeparam name="T">源类型。</typeparam>
         /// <param name="filter">过滤器。</param>
         /// <returns>所有类型为T、继承自T或者实现了接口T，并按照filter过滤的对象。</returns>
-        public IEnumerable<T> GetComponents<T>(Predicate<T> filter)
+        public static IEnumerable<T> GetComponents<T>(Predicate<T> filter)
         {
             var query = from plugin in Plugins
                         where plugin is T && filter((T)plugin)
@@ -94,7 +96,7 @@ namespace PluginFramework.Manager
         /// <param name="dir"></param>
         /// <returns></returns>
         /// <exception cref="DirectoryNotFoundException"/>
-        public virtual IEnumerable<string> DirectoryPluginScan(string dir)
+        public static IEnumerable<string> DirectoryPluginScan(string dir)
         {
             if (!Directory.Exists(dir))
             {
@@ -102,20 +104,20 @@ namespace PluginFramework.Manager
             }
             List<string> files = new List<string>();
 
-            if (this.ScanOption == 0)
+            if (ScanOption == 0)
             {
                 // TODO: 递归查找所有的dll
                 files = Directory.GetFiles(dir, "*.dll", SearchOption.AllDirectories).ToList();
             }
             else
             {
-                if (((int)this.ScanOption & 0x01) != 0)
+                if (((int)ScanOption & 0x01) != 0)
                 {
                     // 查找根目录中所有的dll
                     files = Directory.GetFiles(dir, "*.dll", SearchOption.TopDirectoryOnly).ToList();
                 }
 
-                if (((int)this.ScanOption & 0x02) != 0)
+                if (((int)ScanOption & 0x02) != 0)
                 {
                     // 列出所有的子文件夹
                     var paths = Directory.GetDirectories(dir);
@@ -136,7 +138,7 @@ namespace PluginFramework.Manager
         ///  扫描工作目录下的dll文件。
         /// </summary>
         /// <returns></returns>
-        public virtual IEnumerable<string> WorkDirectoryDllFilesScan()
+        public static IEnumerable<string> WorkDirectoryDllFilesScan()
         {
             return DirectoryPluginScan(WorkDirectory);
         }
@@ -148,7 +150,7 @@ namespace PluginFramework.Manager
         /// <param name="dllFiles">待加载的所有路径。</param>
         /// <returns>返回所有已加载的Assembly。</returns>
         /// <exception cref="FileNotFoundException"/>
-        public virtual IEnumerable<Assembly> LoadAssembliesFromDlls(IEnumerable<string> dllFiles)
+        public static IEnumerable<Assembly> LoadAssembliesFromDlls(IEnumerable<string> dllFiles)
         {
             List<Assembly> assemblies = new List<Assembly>();
             foreach (var item in dllFiles)
