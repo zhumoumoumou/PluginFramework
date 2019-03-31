@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.ComponentModel;
 
 using PluginFramework.Interface;
 using PluginFramework.Attribute;
@@ -13,39 +14,25 @@ namespace Tests
     [PluginCategory("示例", IsMutex = false)]
     [PluginCategory("测试用")]
     [PluginCategory("测试类目A独占", IsMutex = true)]
-    class TestPluginClass1 : IManageable, ILoadable, IUnloadable
+    class TestPluginClass1 : Component, IExtension
     {
-        public EventHandler TargetHandler { get; set; }
+        public ISite Site { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
 
-        public event EventHandler OnCounterFire;
+        public event EventHandler Disposed;
 
-        public int Count { get; private set; }
-        public bool IsEnabled { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
-
-        public bool Load()
+        public bool Attach()
         {
-            return true;
+            throw new NotImplementedException();
         }
 
-        public void ResetCounter() { Count = 0; }
-
-        public void AssignToNewEventHandler(EventHandler handler)
+        public bool Detach()
         {
-            this.TargetHandler -= handler;
-            ResetCounter();
-            handler += OnCounterFire;
-            this.TargetHandler = handler;
+            throw new NotImplementedException();
         }
 
-        public bool Unload()
+        public void Dispose()
         {
-            TargetHandler -= OnCounterFire;
-            return true;
-        }
-
-        public TestPluginClass1()
-        {
-            OnCounterFire += (obj, e) => { this.Count += 1; };
+            throw new NotImplementedException();
         }
     }
 
@@ -53,39 +40,25 @@ namespace Tests
     [PluginCategory("示例", IsMutex = false)]
     [PluginCategory("测试用")]
     [PluginCategory("测试类目B独占", IsMutex = true)]
-    class TestPluginClass2 : IManageable, ILoadable, IUnloadable
+    class TestPluginClass2 : IComponent, IExtension
     {
-        public EventHandler TargetHandler { get; set; }
+        public ISite Site { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
 
-        public event EventHandler OnCounterFire;
+        public event EventHandler Disposed;
 
-        public int Count { get; private set; }
-        public bool IsEnabled { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
-
-        public bool Load()
+        public bool Attach()
         {
-            return true;
+            throw new NotImplementedException();
         }
 
-        public void ResetCounter() { Count = 0; }
-
-        public void AssignToNewEventHandler(EventHandler handler)
+        public bool Detach()
         {
-            this.TargetHandler -= handler;
-            ResetCounter();
-            handler += OnCounterFire;
-            this.TargetHandler = handler;
+            throw new NotImplementedException();
         }
 
-        public bool Unload()
+        public void Dispose()
         {
-            TargetHandler -= OnCounterFire;
-            return true;
-        }
-
-        public TestPluginClass2()
-        {
-            OnCounterFire += (obj, e) => { this.Count += 1; };
+            throw new NotImplementedException();
         }
     }
 }

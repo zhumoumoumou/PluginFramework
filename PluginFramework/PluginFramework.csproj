@@ -46,19 +46,19 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Attribute\PluginInfoAttribute.cs" />
+    <Compile Include="Component.cs" />
     <Compile Include="Demo\DemoPlugin1.cs" />
     <Compile Include="Helper\Helper.cs" />
-    <Compile Include="Interface\IManageable.cs" />
+    <Compile Include="Interface\IComponent.cs" />
     <Compile Include="Manager\BasicManager.cs" />
-    <Compile Include="Interface\IUnloadable.cs" />
-    <Compile Include="Interface\ILoadable.cs" />
-    <Compile Include="Manager\ManagedPluginItem.cs" />
+    <Compile Include="Interface\IExtension.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Folder Include="Attribute\" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

@@ -40,18 +40,7 @@ namespace PluginFramework.Manager
         /// <summary>
         /// 所有托管的插件。
         /// </summary>
-        public List<ManagedPluginItem> Plugins { get; private set; }
-
-        /// <summary>
-        /// 所有已注册的互斥类型。
-        /// </summary>
-        public List<string> RegistedMutexCategories { get; private set; }
-
-        /// <summary>
-        /// 获取所有的可加载项。
-        /// </summary>
-        public IEnumerable<ManagedPluginItem> 
-            LoadList { get { return GetComponents<ILoadable>(); } }
+        public List<IExtension> Plugins { get; private set; }
         
         /// <summary>
         /// 当前管理器的工作目录。
@@ -65,38 +54,35 @@ namespace PluginFramework.Manager
 
         public BasicManager()
         {
-            Plugins = new List<ManagedPluginItem>();
-            RegistedMutexCategories = new List<string>();
+            Plugins = new List<IExtension>();
         }
 
         #region GetComponents
         /// <summary>
-        /// 获取所有类型为T、继承自T或者实现了接口T的<see cref="ManagedPluginItem"/>。
+        /// 获取所有类型为T、继承自T或者实现了接口T的对象。
         /// </summary>
         /// <typeparam name="T">源类型。</typeparam>
-        /// <returns>所有类型为T、继承自T或者实现了接口T的
-        /// <see cref="ManagedPluginItem"/>。</returns>
-        public IEnumerable<ManagedPluginItem> GetComponents<T>()
+        /// <returns>所有类型为T、继承自T或者实现了接口T的对象。</returns>
+        public IEnumerable<T> GetComponents<T>()
         {
             var query = from plugin in Plugins
-                        where plugin.Plugin is T
-                        select plugin;
+                        where plugin is T
+                        select (T)plugin;
             return query;
         }
 
         /// <summary>
-        /// 获取所有类型为T、继承自T或者实现了接口T的
-        /// <see cref="ManagedPluginItem"/>，并按照过滤器规则过滤。
+        /// 获取所有类型为T、继承自T或者实现了接口T的对象
+        /// ，并按照过滤器规则过滤。
         /// </summary>
         /// <typeparam name="T">源类型。</typeparam>
-        /// <param name="filter">过滤器</param>
-        /// <returns>所有类型为T、继承自T或者实现了接口T，并按照filter过滤的
-        /// <see cref="ManagedPluginItem"/>。</returns>
-        public IEnumerable<ManagedPluginItem> GetComponents<T>(Predicate<T> filter)
+        /// <param name="filter">过滤器。</param>
+        /// <returns>所有类型为T、继承自T或者实现了接口T，并按照filter过滤的对象。</returns>
+        public IEnumerable<T> GetComponents<T>(Predicate<T> filter)
         {
             var query = from plugin in Plugins
-                        where plugin.Plugin is T && filter((T)plugin.Plugin)
-                        select plugin;
+                        where plugin is T && filter((T)plugin)
+                        select (T)plugin;
             return query;
         }
         #endregion
@@ -157,7 +143,7 @@ namespace PluginFramework.Manager
         
         #endregion
         /// <summary>
-        /// 从给定路径数组加载所有的<see cref="Assembly"/>
+        /// 从给定路径数组加载所有的<see cref="Assembly"/>。
         /// </summary>
         /// <param name="dllFiles">待加载的所有路径。</param>
         /// <returns>返回所有已加载的Assembly。</returns>
@@ -182,77 +168,7 @@ namespace PluginFramework.Manager
                     throw e;
                 }
             }
-            return assemblies.AsEnumerable();
+            return assemblies;
         }
-
-        /// <summary>
-        /// 表示互斥类型列表是否已经被当前<see cref="BasicManager"/>注册。
-        /// </summary>
-        /// <param name="mutexCategory"></param>
-        /// <returns>若返回true表示尚未注册。</returns>
-        public bool IsMutexCategoryRegisted(IEnumerable<string> mutexCategory)
-        {
-            return !(mutexCategory.Intersect(this.RegistedMutexCategories).Count() == 0);
-        }
-
-        /// <summary>
-        /// 判断当前类型的MutexCategory是否已被注册，若没有注册，则创建相应的
-        /// <see cref="ManagedPluginItem"/>并将其添加到
-        /// <see cref="RegistedMutexCategories"/>列表中。
-        /// </summary>
-        /// <param name="type">要添加管理的类型。</param>
-        /// <exception cref="ArgumentException"/>
-        public virtual void AppendPluginManagedItem(Type type)
-        {
-            if (type.GetInterfaces().Contains(typeof(IManageable)))
-            {
-                var mutex = ManagedPluginItem.GetTypeMutexCategories(type);
-
-                if (mutex.Intersect(this.RegistedMutexCategories).Count() == 0)
-                {
-                    RegistedMutexCategories = RegistedMutexCategories.Concat(mutex).ToList();
-                    Plugins.Add(ManagedPluginItem.CreateManagedPluginItem(type));
-                }
-                else
-                {
-
-                    if (OnMutexPluginConflict == null)
-                    {
-                        throw new ArgumentException("已有互斥类型注册。");
-                    }
-                    else
-                    {
-                        OnMutexPluginConflict.Invoke(type);
-                    }
-                }
-            }
-        }
-
-        /// <summary>
-        /// 按照一定的顺序开始加载dll文件，并将其中的插件载入。
-        /// </summary>
-        public void DllLoadingChain()
-        {
-            var dllPaths = this.WorkDirectoryDllFilesScan();
-            var assemblies = this.LoadAssembliesFromDlls(dllPaths);
-
-            foreach (var ass in assemblies)
-            {
-                var types = ass.GetTypes();
-                foreach (var type in types)
-                {
-                    this.AppendPluginManagedItem(type);
-                }
-            }
-        }
-        /// <summary>
-        /// 当检测到冲突时引发事件。若该事件未受任何订阅，<see cref="AppendPluginManagedItem(Type)"/>方法将抛出<see cref="ArgumentException"/>。
-        /// </summary>
-        public event Action<Type> OnMutexPluginConflict;
-
-        /// <summary>
-        /// 用于处理不同接口响应的一般策略。
-        /// </summary>
-        public event Action<Type> InterfaceViewStratagy;
     }
 }

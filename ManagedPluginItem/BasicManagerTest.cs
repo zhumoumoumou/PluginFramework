@@ -52,7 +52,7 @@ namespace Tests
             manager.DllLoadingChain();
             foreach (var item in manager.LoadList)
             {
-                ((ILoadable)item.Plugin).Load();
+                ((IExtension)item.Plugin).Load();
             }
         }
     }
