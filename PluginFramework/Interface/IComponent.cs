@@ -29,7 +29,7 @@ namespace PluginFramework.Interface
         /// <summary>
         /// 公开的子模块清单。
         /// </summary>
-        IEnumerable<IComponent> Chlidren { get; }
+        IEnumerable<IComponent> Children { get; }
     }
 
 }

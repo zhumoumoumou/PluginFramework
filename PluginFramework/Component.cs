@@ -18,7 +18,7 @@ namespace PluginFramework
 
         public bool IsEnabled { get; set; }
 
-        public IEnumerable<IComponent> Chlidren => null;
+        public IEnumerable<IComponent> Children => null;
 
         public void Dispose()
         {
