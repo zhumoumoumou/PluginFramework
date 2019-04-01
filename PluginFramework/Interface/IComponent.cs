@@ -4,6 +4,8 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
+using System.Collections.ObjectModel;
+
 namespace PluginFramework.Interface
 {
     /// <summary>
@@ -22,14 +24,17 @@ namespace PluginFramework.Interface
         string Description { get; }
 
         /// <summary>
-        /// 插件是否处于启用状态。
+        /// 插件是否处于启用状态。此项务必赋以初值，因为它决定
+        /// <see cref="IExtension"/>接口在用户进行激活/解除激活操作时
+        /// 调用Detach还是Attach。
+        /// 它同时还与界面显示有关。
         /// </summary>
-        bool IsEnabled { get; set; }
+        bool IsEnabled { get; }
 
         /// <summary>
         /// 公开的子模块清单。
         /// </summary>
-        IEnumerable<IComponent> Children { get; }
+        ObservableCollection<IComponent> Children { get; }
     }
 
 }
