@@ -5,14 +5,14 @@ using System.Text;
 using System.Threading.Tasks;
 
 using System.Collections.ObjectModel;
-using System.ComponentModel;
+using PluginFramework.Interface;
 
 namespace PluginFramework.Model
 {
     /// <summary>
     /// 表示一个部件。
     /// </summary>
-    public abstract class Component : MarshalByRefObject, IDisposable, INotifyPropertyChanged
+    public abstract class Component : MarshalByRefObject, IDisposable, System.ComponentModel.INotifyPropertyChanged, IComponent
     {
         private string name;
         /// <summary>
@@ -69,11 +69,11 @@ namespace PluginFramework.Model
         /// <summary>
         /// <see cref="Children"/>所对应的字段。
         /// </summary>
-        private ObservableCollection<Component> children;
+        private ObservableCollection<IComponent> children;
         /// <summary>
         /// 公开的子模块清单。
         /// </summary>
-        public ObservableCollection<Component> Children { get { return children; } protected set { children = value; RaisePropertyChanged("Children"); } }
+        public ObservableCollection<IComponent> Children { get { return children; } protected set { children = value; RaisePropertyChanged("Children"); } }
 
         /// <summary>
         /// 采用部件名称字符串初始化部件。
@@ -82,13 +82,13 @@ namespace PluginFramework.Model
         public Component(string name)
         {
             this.Name = name;
-            Children = new ObservableCollection<Component>();
+            Children = new ObservableCollection<IComponent>();
         }
 
         /// <summary>
-        /// <see cref="INotifyPropertyChanged"/>接口定义的事件。
+        /// <see cref="System.ComponentModel.INotifyPropertyChanged"/>接口定义的事件。
         /// </summary>
-        public event PropertyChangedEventHandler PropertyChanged;
+        public event System.ComponentModel.PropertyChangedEventHandler PropertyChanged;
 
         /// <summary>
         /// 触发<see cref="PropertyChanged"/>事件，通知客户端属性已修改。
@@ -96,15 +96,21 @@ namespace PluginFramework.Model
         /// <param name="prop"></param>
         protected virtual void RaisePropertyChanged(string prop)
         {
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(prop));
+            PropertyChanged?.Invoke(this, new System.ComponentModel.PropertyChangedEventArgs(prop));
         }
 
         /// <summary>
         /// 释放<see cref="Component"/>的非托管资源。
         /// </summary>
-        public virtual void Dispose()
-        {
+        public abstract void Dispose();
 
+        /// <summary>
+        /// 获取插件名称与描述的组合字符串。
+        /// </summary>
+        /// <returns></returns>
+        public override string ToString()
+        {
+            return Name + " " + Description;
         }
     }
 }

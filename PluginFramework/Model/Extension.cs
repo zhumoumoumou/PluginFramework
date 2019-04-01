@@ -1,4 +1,5 @@
-﻿using System;
+﻿using PluginFramework.Interface;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -9,7 +10,7 @@ namespace PluginFramework.Model
     /// <summary>
     /// 表示插件加载入口的接口。
     /// </summary>
-    public abstract class Extension : Component
+    public abstract class Extension : Component, IExtension
     {
         /// <summary>
         /// 插件加载方法。请注意修改<see cref="Component.IsEnabled"/>，否则将导致插件反复加载。
@@ -30,12 +31,14 @@ namespace PluginFramework.Model
         public Extension(string name) : base(name) { }
 
         /// <summary>
-        /// 非托管资源释放。
+        /// 非托管资源释放。当<see cref="Component.IsEnabled"/>为真将首先调用一次<see cref="Detach"/>。
         /// </summary>
         public override void Dispose()
         {
-            base.Dispose();
-            Detach();
+            if (IsEnabled)
+            {
+                Detach();
+            }
         }
     }
 }

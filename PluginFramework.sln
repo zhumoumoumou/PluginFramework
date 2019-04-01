@@ -5,8 +5,6 @@ VisualStudioVersion = 15.0.28307.421
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PluginFramework", "PluginFramework\PluginFramework.csproj", "{1C18F1A6-E5F6-4CE6-B48C-A5BDB237C36A}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ManagedPluginItemTest", "ManagedPluginItem\ManagedPluginItemTest.csproj", "{7B73D30D-F7CC-4A6D-8BE1-276987FF68ED}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ComponentModelTest", "ComponentModelTest\ComponentModelTest.csproj", "{AB210158-4B73-48E8-9F64-288F17D8F3C0}"
 EndProject
 Global
@@ -19,10 +17,6 @@ Global
 		{1C18F1A6-E5F6-4CE6-B48C-A5BDB237C36A}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{1C18F1A6-E5F6-4CE6-B48C-A5BDB237C36A}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{1C18F1A6-E5F6-4CE6-B48C-A5BDB237C36A}.Release|Any CPU.Build.0 = Release|Any CPU
-		{7B73D30D-F7CC-4A6D-8BE1-276987FF68ED}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{7B73D30D-F7CC-4A6D-8BE1-276987FF68ED}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{7B73D30D-F7CC-4A6D-8BE1-276987FF68ED}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{7B73D30D-F7CC-4A6D-8BE1-276987FF68ED}.Release|Any CPU.Build.0 = Release|Any CPU
 		{AB210158-4B73-48E8-9F64-288F17D8F3C0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{AB210158-4B73-48E8-9F64-288F17D8F3C0}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{AB210158-4B73-48E8-9F64-288F17D8F3C0}.Release|Any CPU.ActiveCfg = Release|Any CPU
