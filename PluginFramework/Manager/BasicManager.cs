@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 using System.Reflection;
 
-using PluginFramework.Interface;
+using PluginFramework.Model;
 using System.Runtime.InteropServices;
 using System.Collections.ObjectModel;
 
@@ -43,7 +43,7 @@ namespace PluginFramework.Manager
         /// <summary>
         /// 所有托管的插件。
         /// </summary>
-        public static ObservableCollection<IExtension> Plugins { get; private set; }
+        public static ObservableCollection<Extension> Plugins { get; private set; }
         
         /// <summary>
         /// 当前管理器的工作目录。
@@ -57,7 +57,7 @@ namespace PluginFramework.Manager
 
         static BasicManager()
         {
-            Plugins = new ObservableCollection<IExtension>();
+            Plugins = new ObservableCollection<Extension>();
         }
 
         #region GetComponents
@@ -70,7 +70,7 @@ namespace PluginFramework.Manager
         {
             var query = from plugin in Plugins
                         where plugin is T
-                        select (T)plugin;
+                        select (T)(object)plugin;
             return query;
         }
 
@@ -84,8 +84,8 @@ namespace PluginFramework.Manager
         public static IEnumerable<T> GetComponents<T>(Predicate<T> filter)
         {
             var query = from plugin in Plugins
-                        where plugin is T && filter((T)plugin)
-                        select (T)plugin;
+                        where plugin is T && filter((T)(object)plugin)
+                        select (T)(object)plugin;
             return query;
         }
         #endregion

@@ -47,9 +47,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Interface\IComponent.cs" />
+    <Compile Include="Model\Component.cs" />
     <Compile Include="Manager\BasicManager.cs" />
-    <Compile Include="Interface\IExtension.cs" />
+    <Compile Include="Model\Extension.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
