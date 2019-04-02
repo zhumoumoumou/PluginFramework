@@ -10,13 +10,15 @@ using PluginFramework.Interface;
 namespace PluginFramework.Model
 {
     /// <summary>
-    /// 表示一个部件。
+    /// 表示一个部件。它提供了<see cref="IComponent"/>接口的基础实现。
     /// </summary>
     public abstract class Component : MarshalByRefObject, IDisposable, System.ComponentModel.INotifyPropertyChanged, IComponent
     {
         private string name;
         /// <summary>
         /// 插件的友好名称。
+        /// <see cref="Name"/>为空时在GUI插件树界面将很难识别到该插件
+        /// ，因此不建议令<see cref="Name"/>为空。
         /// </summary>
         public string Name
         {
@@ -65,10 +67,7 @@ namespace PluginFramework.Model
                 }
             }
         }
-
-        /// <summary>
-        /// <see cref="Children"/>所对应的字段。
-        /// </summary>
+        
         private ObservableCollection<IComponent> children;
         /// <summary>
         /// 公开的子模块清单。
@@ -82,6 +81,14 @@ namespace PluginFramework.Model
         public Component(string name)
         {
             this.Name = name;
+            Children = new ObservableCollection<IComponent>();
+        }
+
+        /// <summary>
+        /// 跳过对<see cref="Name"/>的初始化，直接初始化一个<see cref="Component"/>类。
+        /// </summary>
+        protected Component()
+        {
             Children = new ObservableCollection<IComponent>();
         }
 

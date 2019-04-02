@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 namespace PluginFramework.Interface
 {
     /// <summary>
-    /// 表示一个部件的接口。一般情况下不直接实现该接口而是继承<see cref="Model.Component"/>类。
+    /// 表示一个部件的接口。推荐不直接实现该接口而是继承<see cref="Model.Component"/>类。
     /// </summary>
     public interface IComponent
     {

@@ -9,9 +9,9 @@ using PluginFramework.Model;
 namespace PluginFramework.Interface
 {
     /// <summary>
-    /// 表示一个可以装载与卸载的插件接口。一般情况下不直接实现该接口而是继承<see cref="Extension"/>类。
+    /// 表示一个可以装载与卸载的插件接口。推荐不直接实现该接口而是继承<see cref="Extension"/>类。
     /// </summary>
-    public interface IExtension
+    public interface IExtension : IComponent
     {
         /// <summary>
         /// 插件加载方法。请注意修改<see cref="IComponent.IsEnabled"/>，否则将导致插件反复加载。

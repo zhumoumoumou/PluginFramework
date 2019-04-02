@@ -10,6 +10,7 @@ using System.Reflection;
 using PluginFramework.Model;
 using System.Runtime.InteropServices;
 using System.Collections.ObjectModel;
+using PluginFramework.Interface;
 
 namespace PluginFramework.Manager
 {
@@ -35,7 +36,7 @@ namespace PluginFramework.Manager
 
 
     /// <summary>
-    /// 插件管理器。
+    /// 插件管理器。插件开发者无需了解其细节。
     /// </summary>
     [ComVisible(true)]
     public static class BasicManager
@@ -43,7 +44,7 @@ namespace PluginFramework.Manager
         /// <summary>
         /// 所有托管的插件。
         /// </summary>
-        public static ObservableCollection<Extension> Plugins { get; private set; }
+        public static ObservableCollection<IExtension> Plugins { get; private set; }
         
         /// <summary>
         /// 当前管理器的工作目录。
@@ -57,7 +58,7 @@ namespace PluginFramework.Manager
 
         static BasicManager()
         {
-            Plugins = new ObservableCollection<Extension>();
+            Plugins = new ObservableCollection<IExtension>();
         }
 
         #region GetComponents
